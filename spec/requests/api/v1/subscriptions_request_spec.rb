@@ -6,7 +6,7 @@ describe 'subscriptions API' do
     tea = create(:tea)
     headers = { "CONTENT_TYPE" => "application/json" }
 
-    post "api/v1/customers/#{customer.id}/teas/#{tea.id}/", headers: headers, params: JSON.generate({frequency: "monthly", price: 10})
+    post "/api/v1/customers/#{customer.id}/teas/#{tea.id}/subscriptions", headers: headers, params: JSON.generate({frequency: "monthly", price: 10})
     response_body = JSON.parse(response.body, symbolice_names: true)
 
     expect(response).to be_successful
