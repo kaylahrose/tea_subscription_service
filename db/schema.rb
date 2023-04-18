@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_18_211231) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_18_225951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_18_211231) do
     t.bigint "tea_id", null: false
     t.bigint "customer_id", null: false
     t.integer "price"
-    t.string "status"
+    t.integer "status", default: 0
     t.string "frequency"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
