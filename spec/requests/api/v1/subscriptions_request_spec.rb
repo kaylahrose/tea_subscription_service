@@ -11,4 +11,15 @@ describe 'subscriptions API' do
 
     expect(response).to be_successful
   end
+
+  it 'cancels a customers tea subscription' do
+    customer = create(:customer)
+    tea = create(:tea) 
+    subscription = Subscription.create(customer_id: customer.id, tea_id: tea.id, price: 10, status: 0, frequency: 'weekly')
+    
+    patch "/api/v1/subscriptions/#{subscription.id}"
+    response_body = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to be_successful
+  end
 end
