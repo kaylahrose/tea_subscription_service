@@ -9,6 +9,16 @@ An endpoint to see all of a customer’s subsciptions (active and cancelled)
 
 Project specifications can be found [here](https://mod4.turing.edu/projects/take_home/take_home_be).
 
+## Installation
+
+1. Fork and clone this repository
+2. `cd` into the root directiory
+3. `bundle install`
+4. `rails db:{drop,create,migrate,seed}`
+5. Run the test suite with `bundle exec rspec`
+6. Start the local server by running `rails s`
+7. Visit the app on `http://127.0.0.1:3000` in your web browser
+
 ## RESTful Endpoints
 
 <details close>
