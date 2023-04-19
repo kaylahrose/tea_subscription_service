@@ -33,7 +33,19 @@ describe 'subscriptions API' do
           expect(response_body[:error].first[:status]).to eq('400')
         end
 
-        it 'responds with error for no tea'
+        it 'responds with error for no tea' do 
+          customer = create(:customer)
+          tea = create(:tea)
+          headers = { "CONTENT_TYPE" => "application/json" }
+
+          post "/api/v1/customers/#{customer.id}/teas/#{tea.id+1}/subscriptions", headers: headers, params: JSON.generate({frequency: "monthly", price: 10})
+          response_body = JSON.parse(response.body, symbolize_names: true)
+
+          expect(response).to_not be_successful
+          expect(response.status).to eq(400)
+          expect(response_body[:error].first[:title]).to eq("Validation failed: Tea must exist")
+          expect(response_body[:error].first[:status]).to eq('400') 
+        end
         it 'doesnt create subscription with empty params'
       end
     end
