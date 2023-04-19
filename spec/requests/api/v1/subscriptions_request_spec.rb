@@ -22,4 +22,16 @@ describe 'subscriptions API' do
 
     expect(response).to be_successful
   end
+
+  it 'shows all of a customers subscripitons' do
+    create_list(:customer, 5)
+    create_list(:tea, 5) 
+    3.times { Subscription.create(customer_id: Customer.last.id, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') }
+    Subscription.create(customer_id: Customer.last.id-1, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') 
+
+    get "/api/v1/customers/#{Customer.last.id}/subscripitons"
+    response_body = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to be_successful
+  end
 end
