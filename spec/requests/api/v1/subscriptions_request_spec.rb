@@ -29,7 +29,7 @@ describe 'subscriptions API' do
     3.times { Subscription.create(customer_id: Customer.last.id, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') }
     Subscription.create(customer_id: Customer.last.id-1, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') 
 
-    get "/api/v1/customers/#{Customer.last.id}/subscripitons"
+    get "/api/v1/customers/#{Customer.last.id}/subscriptions"
     response_body = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
