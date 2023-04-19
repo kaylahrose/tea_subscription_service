@@ -1,7 +1,7 @@
 class Api::V1::SubscriptionsController < ApplicationController
   def create
     new_sub = Subscription.create(create_sub_params) 
-    render json: SubscriptionSerializer.new(new_sub)
+    render json: SubscriptionSerializer.new(new_sub), status: :created
   end
 
   def update

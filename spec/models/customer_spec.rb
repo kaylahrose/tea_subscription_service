@@ -8,6 +8,7 @@ RSpec.describe Customer do
     it {should validate_uniqueness_of(:email)}
     it {should validate_presence_of(:street_address)}
   end
+  
   describe 'relationships' do
     it {should have_many :subscriptions}
     it {should have_many(:teas).through(:subscriptions)}

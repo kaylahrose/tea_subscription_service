@@ -7,9 +7,13 @@ describe 'subscriptions API' do
     headers = { "CONTENT_TYPE" => "application/json" }
 
     post "/api/v1/customers/#{customer.id}/teas/#{tea.id}/subscriptions", headers: headers, params: JSON.generate({frequency: "monthly", price: 10})
-    response_body = JSON.parse(response.body, symbolice_names: true)
+    response_body = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
+    expect(response.status).to eq(201)
+    expect(response_body[:data][:id]).to be_a String
+    expect(response_body[:data][:type]).to be_a String
+    expect(response_body[:data][:attributes]).to be_a Hash
   end
 
   it 'cancels a customers tea subscription' do
@@ -21,6 +25,10 @@ describe 'subscriptions API' do
     response_body = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
+    expect(response.status).to eq(200)
+    expect(response_body[:data][:id]).to be_a String
+    expect(response_body[:data][:type]).to be_a String
+    expect(response_body[:data][:attributes]).to be_a Hash
   end
 
   it 'shows all of a customers subscripitons' do
@@ -31,7 +39,11 @@ describe 'subscriptions API' do
 
     get "/api/v1/customers/#{Customer.last.id}/subscriptions"
     response_body = JSON.parse(response.body, symbolize_names: true)
-
+    
     expect(response).to be_successful
+    expect(response.status).to eq(200)
+    expect(response_body[:data].first[:id]).to be_a String
+    expect(response_body[:data].first[:type]).to be_a String
+    expect(response_body[:data].first[:attributes]).to be_a Hash
   end
 end
