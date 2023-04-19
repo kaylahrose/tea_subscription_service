@@ -10,6 +10,7 @@ Rails.application.routes.draw do
           resources :subscriptions, only: [:create]
         end
       end
+      resources :subscriptions, only: [:update]
     end
   end
 end
