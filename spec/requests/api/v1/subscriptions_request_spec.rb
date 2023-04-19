@@ -115,19 +115,41 @@ describe 'subscriptions API' do
     end
   end
 
-  it 'shows all of a customers subscripitons' do
-    create_list(:customer, 5)
-    create_list(:tea, 5) 
-    3.times { Subscription.create(customer_id: Customer.last.id, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') }
-    Subscription.create(customer_id: Customer.last.id-1, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') 
+  describe 'GET /api/v1/customers/:id/subscriptions' do
+    describe 'happy path' do
+      it 'shows all of a customers subscripitons' do
+        create_list(:customer, 5)
+        create_list(:tea, 5) 
+        3.times { Subscription.create(customer_id: Customer.last.id, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') }
+        Subscription.create(customer_id: Customer.last.id-1, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') 
 
-    get "/api/v1/customers/#{Customer.last.id}/subscriptions"
-    response_body = JSON.parse(response.body, symbolize_names: true)
-    
-    expect(response).to be_successful
-    expect(response.status).to eq(200)
-    expect(response_body[:data].first[:id]).to be_a String
-    expect(response_body[:data].first[:type]).to be_a String
-    expect(response_body[:data].first[:attributes]).to be_a Hash
+        get "/api/v1/customers/#{Customer.last.id}/subscriptions"
+        response_body = JSON.parse(response.body, symbolize_names: true)
+        
+        expect(response).to be_successful
+        expect(response.status).to eq(200)
+        expect(response_body[:data].count).to eq(3)
+        expect(response_body[:data].first[:id]).to be_a String
+        expect(response_body[:data].first[:type]).to be_a String
+        expect(response_body[:data].first[:attributes]).to be_a Hash
+      end
+    end
+
+    describe 'sad path' do
+      it 'returns not found for bad id' do
+        create_list(:customer, 5)
+        create_list(:tea, 5) 
+        3.times { Subscription.create(customer_id: Customer.last.id, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') }
+        Subscription.create(customer_id: Customer.last.id-1, tea_id: Tea.last.id, price: 10, status: 0, frequency: 'weekly') 
+
+        get "/api/v1/customers/#{Customer.last.id+1}/subscriptions"
+        response_body = JSON.parse(response.body, symbolize_names: true)
+      
+        expect(response).to_not be_successful
+        expect(response.status).to eq(404)
+        expect(response_body[:error].first[:title]).to eq("Couldn't find Customer with 'id'=#{Customer.last.id+1}")
+        expect(response_body[:error].first[:status]).to eq('404')  
+      end
+    end
   end
 end
