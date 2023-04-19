@@ -1,5 +1,13 @@
 # Tea Subscription Service
 
+## Summary
+This repository is a Rails API for a Tea Subscription Service that satisfies the following requirements:
+
+An endpoint to subscribe a customer to a tea subscription
+An endpoint to cancel a customer’s tea subscription
+An endpoint to see all of a customer’s subsciptions (active and cancelled)
+
+Project specifications can be found [here](https://mod4.turing.edu/projects/take_home/take_home_be).
 
 ## RESTful Endpoints
 
