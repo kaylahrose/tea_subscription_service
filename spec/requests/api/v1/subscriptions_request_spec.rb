@@ -18,7 +18,7 @@ describe 'subscriptions API' do
         expect(response_body[:data][:attributes]).to be_a Hash
       end
     end
-    
+
     describe 'sad path' do
       it 'responds with error for no/invalid customer' do
         customer = create(:customer)
@@ -80,19 +80,39 @@ describe 'subscriptions API' do
     end
   end
 
-  it 'cancels a customers tea subscription' do
-    customer = create(:customer)
-    tea = create(:tea) 
-    subscription = Subscription.create(customer_id: customer.id, tea_id: tea.id, price: 10, status: 0, frequency: 'weekly')
-    
-    patch "/api/v1/subscriptions/#{subscription.id}"
-    response_body = JSON.parse(response.body, symbolize_names: true)
+  describe 'PATCH /api/v1/subscriptions/:id' do
+    describe 'happy path' do
+      it 'cancels a customers tea subscription' do
+        customer = create(:customer)
+        tea = create(:tea) 
+        subscription = Subscription.create(customer_id: customer.id, tea_id: tea.id, price: 10, status: 0, frequency: 'weekly')
+        
+        patch "/api/v1/subscriptions/#{subscription.id}"
+        response_body = JSON.parse(response.body, symbolize_names: true)
 
-    expect(response).to be_successful
-    expect(response.status).to eq(200)
-    expect(response_body[:data][:id]).to be_a String
-    expect(response_body[:data][:type]).to be_a String
-    expect(response_body[:data][:attributes]).to be_a Hash
+        expect(response).to be_successful
+        expect(response.status).to eq(200)
+        expect(response_body[:data][:id]).to be_a String
+        expect(response_body[:data][:type]).to be_a String
+        expect(response_body[:data][:attributes]).to be_a Hash
+      end
+    end
+    
+    describe 'sad path' do
+      it 'returns 404 for bad id' do
+        customer = create(:customer)
+        tea = create(:tea) 
+        subscription = Subscription.create(customer_id: customer.id, tea_id: tea.id, price: 10, status: 0, frequency: 'weekly')
+        
+        patch "/api/v1/subscriptions/#{Subscription.last.id+1}"
+        response_body = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to_not be_successful
+        expect(response.status).to eq(404)
+        expect(response_body[:error].first[:title]).to eq("Couldn't find Subscription with 'id'=#{Subscription.last.id+1}")
+        expect(response_body[:error].first[:status]).to eq('404')  
+      end
+    end
   end
 
   it 'shows all of a customers subscripitons' do
