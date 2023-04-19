@@ -50,11 +50,11 @@ Example Value:
 ---
   
   
-### Subscribe a customer to a tea subscription
+### Cancel a customer’s tea subscription
 
 
 ```http
-POST /api/v1/customers/:customer_id/teas/:tea_id/subscriptions
+PATCH /api/v1/subscriptions/:id
 ```
 
 <details close>
@@ -63,29 +63,89 @@ POST /api/v1/customers/:customer_id/teas/:tea_id/subscriptions
     
 Parameters: <br>
 ```
-{
-    "frequency": string,
-    "price": integer
-}
+none
 ```
 
 | Code | Description |
 | :--- | :--- |
-| 201 | `CREATED` |
+| 200 | `OK` |
 
 Example Value:
 
 ```json
 {
     "data": {
-        "id": "4",
+        "id": "1",
         "type": "subscription",
         "attributes": {
             "price": 10,
-            "status": "active",
+            "status": "inactive",
             "frequency": "monthly"
         }
     }
+}
+```
+
+</details>
+
+---
+    
+      
+### View all of a customer’s subsciptions (active and cancelled)
+
+
+```http
+GET /api/v1/customers/:id/subscriptions
+```
+
+<details close>
+<summary>  Details </summary>
+<br>
+    
+Parameters: <br>
+```
+none
+```
+
+| Code | Description |
+| :--- | :--- |
+| 200 | `OK` |
+
+Example Value:
+
+```json
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "subscription",
+            "attributes": {
+                "price": 10,
+                "status": "inactive",
+                "frequency": "monthly"
+            }
+        },
+        {
+            "id": "2",
+            "type": "subscription",
+            "attributes": {
+                "price": 10,
+                "status": "active",
+                "frequency": "monthly"
+            }
+        },
+        {
+            "id": "3",
+            "type": "subscription",
+            "attributes": {
+                "price": 10,
+                "status": "active",
+                "frequency": "monthly"
+            }
+        },
+        {etc},
+        {etc}
+    ]
 }
 ```
 
