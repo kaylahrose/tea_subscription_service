@@ -7,19 +7,20 @@ describe 'subscriptions API' do
         customer = create(:customer)
         tea = create(:tea)
         headers = { "CONTENT_TYPE" => "application/json" }
-
+        
         post "/api/v1/customers/#{customer.id}/teas/#{tea.id}/subscriptions", headers: headers, params: JSON.generate({frequency: "monthly", price: 10})
         response_body = JSON.parse(response.body, symbolize_names: true)
-
+        
         expect(response).to be_successful
         expect(response.status).to eq(201)
         expect(response_body[:data][:id]).to be_a String
         expect(response_body[:data][:type]).to be_a String
         expect(response_body[:data][:attributes]).to be_a Hash
       end
-
+      
       describe 'sad path' do
         it 'responds with error for no/invalid customer' do
+          customer = create(:customer)
           tea = create(:tea)
           headers = { "CONTENT_TYPE" => "application/json" }
 
@@ -28,6 +29,7 @@ describe 'subscriptions API' do
 
           expect(response).to_not be_successful
         end
+
         it 'responds with error for no tea'
         it 'doesnt create subscription with empty params'
       end
