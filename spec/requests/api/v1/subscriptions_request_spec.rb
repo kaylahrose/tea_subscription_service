@@ -28,6 +28,9 @@ describe 'subscriptions API' do
           response_body = JSON.parse(response.body, symbolize_names: true)
 
           expect(response).to_not be_successful
+          expect(response.status).to eq(400)
+          expect(response_body[:error].first[:title]).to eq("Validation failed: Customer must exist")
+          expect(response_body[:error].first[:status]).to eq('400')
         end
 
         it 'responds with error for no tea'
