@@ -1,4 +1,5 @@
 # Tea Subscription Service
+[![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/it-works-why.svg)](https://forthebadge.com)
 
 ## Summary
 This repository is a Rails API for a Tea Subscription Service that satisfies the following requirements:
@@ -187,4 +188,6 @@ Onyva returns the following status codes in its API:
 | 500 | `INTERNAL SERVER ERROR` |
 
 ## Schema Design
+
+![Screen Shot 2023-04-21 at 10 10 18 AM](https://user-images.githubusercontent.com/111713452/233684281-229cdc4d-cf5e-415d-b9f5-2b51d0b56cdd.png)
 
